@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +20,19 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/posters', function () {
-    return view('posters');
+Route::get('/performances', function () {
+    return view('performances.index');
+})->name('performances.index');
+Route::post('/register',[UserController::class, 'store'])->name('register');
+Route::post('/login',[UserController::class, 'login'])->name('login');
+Route::get('/logout',[UserController::class, 'logout'])->name('logout');
+
+
+
+
+Route::group(['admin' => 'middleware'], function (){
+    Route::resource('genres', GenreController::class);
+    Route::resource('performances', PerformanceController::class);
 });
+
 
